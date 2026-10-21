@@ -1867,12 +1867,21 @@ button {
         display: none !important;
     }
 
+    .hero-tagline {
+        margin-bottom: 16px;
+    }
+
     .hero-book-mobile {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 20px auto 26px auto;
+        margin: 14px auto 20px auto;
         position: relative;
+    }
+
+    .hero-badges {
+        justify-content: center;
+        margin-bottom: 24px;
     }
 
     .hero-book-mobile-wrapper {
@@ -1961,7 +1970,7 @@ button {
     }
 
     .hero-book-mobile {
-        margin: 16px auto 22px auto;
+        margin: 12px auto 18px auto;
     }
 
     .site-header {
