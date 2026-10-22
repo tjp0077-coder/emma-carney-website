@@ -186,7 +186,7 @@
                     <li><a href="#hero" class="nav-link active">Home</a></li>
                     <li><a href="#books" class="nav-link">The Novels</a></li>
                     <li><a href="#about" class="nav-link">About Emma</a></li>
-                    <li><a href="#newsletter" class="nav-link">Newsletter</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
 
@@ -687,32 +687,56 @@
             </div>
         </section>
 
-        <!-- Readers Club Newsletter Section -->
-        <section class="newsletter-section" id="newsletter">
-            <div class="section-container">
-                <div class="newsletter-card">
-                    <div class="newsletter-decor">
+        <!-- Direct Correspondence / Contact Section -->
+        <section class="contact-section" id="contact" aria-label="Contact Emma Carney">
+            <div class="section-container contact-container">
+                <div class="contact-card">
+                    <div class="contact-decor">
                         <i class="fas fa-envelope-open-text"></i>
                     </div>
-                    <span class="section-eyebrow text-center"><i class="fas fa-sparkles"></i> The Readers Circle</span>
-                    <h2 class="newsletter-heading text-center">Join Emma's Reader Club</h2>
-                    <p class="newsletter-subheading text-center">
-                        Be the first to receive exclusive sneak peeks, deleted scenes, bonus romantic epilogues, and new release notifications delivered directly to your inbox.
+                    <span class="section-eyebrow text-center"><i class="fas fa-feather-alt"></i> Direct Correspondence</span>
+                    <h2 class="contact-heading text-center">Get in Touch with Emma</h2>
+                    <p class="contact-subheading text-center">
+                        Have a thought about the novels, a note for Emma, or just want to say hello? Send a message directly to her personal inbox.
                     </p>
 
-                    <form class="newsletter-form" id="newsletterForm">
+                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/a56559da3500dd457906bfc04ba0eefc" method="POST" novalidate>
+                        <!-- Anti-spam Honeypot -->
+                        <input type="text" name="_hp" class="contact-hp" style="display:none!important;" tabindex="-1" autocomplete="off" aria-hidden="true">
+                        <input type="hidden" name="_subject" value="From Emma Carney Website">
+                        <input type="hidden" name="_template" value="table">
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">Your Name</label>
+                                <input type="text" id="contactName" name="name" class="contact-control" placeholder="e.g. Sarah Jenkins" required maxlength="80">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail" class="form-label">Your Email</label>
+                                <input type="email" id="contactEmail" name="email" class="contact-control" placeholder="e.g. sarah@example.com" required maxlength="100">
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <input type="text" id="readerName" name="name" placeholder="Your first name" required class="form-input">
-                            <input type="email" id="readerEmail" name="email" placeholder="Your email address" required class="form-input">
-                            <button type="submit" class="btn btn-primary btn-newsletter">
-                                <span>Subscribe Free</span>
-                                <i class="fas fa-paper-plane"></i>
+                            <label for="contactSubject" class="form-label">Subject</label>
+                            <input type="text" id="contactSubject" name="subject" class="contact-control" placeholder="e.g. Question about Dare to Dream" maxlength="120">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactMessage" class="form-label">Message</label>
+                            <textarea id="contactMessage" name="message" class="contact-control" rows="5" placeholder="Write your message to Emma..." required maxlength="3000"></textarea>
+                        </div>
+
+                        <div class="contact-footer">
+                            <span class="contact-security-notice">
+                                <i class="fas fa-shield-alt"></i> Delivered directly to Emma's private inbox.
+                            </span>
+                            <button type="submit" class="btn btn-primary btn-submit-contact" id="btnSubmitContact">
+                                <i class="fas fa-paper-plane"></i> Send Message
                             </button>
                         </div>
-                        <div class="newsletter-status" id="newsletterStatus"></div>
-                        <p class="newsletter-disclaimer text-center">
-                            <i class="fas fa-lock"></i> We respect your privacy. No spam, ever &mdash; unsubscribe at any time with one click.
-                        </p>
+
+                        <div class="form-feedback" id="contactFeedback" style="display: none;" role="status"></div>
                     </form>
                 </div>
             </div>
@@ -726,6 +750,27 @@
             <button class="modal-close" id="modalClose" aria-label="Close dialog">&times;</button>
             <div class="modal-content" id="modalContent">
                 <!-- Dynamically filled by script.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Confirmation Callout Modal -->
+    <div id="contactCalloutModal" class="contact-callout-overlay modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="calloutTitle">
+        <div class="modal-backdrop" id="calloutBackdrop"></div>
+        <div class="callout-modal-dialog">
+            <button type="button" class="modal-close" id="calloutCloseXBtn" aria-label="Close dialog">&times;</button>
+            <div class="callout-modal-body">
+                <div class="callout-icon-wrap">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <div class="section-eyebrow text-center"><i class="fas fa-heart"></i> Message Sent</div>
+                <h3 id="calloutTitle" class="callout-title">Thank You</h3>
+                <p class="callout-text">Thank you for your message. Emma will get back to you shortly.</p>
+                <div class="callout-actions">
+                    <button type="button" class="btn btn-primary" id="btnCalloutClose">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -756,7 +801,7 @@
                         <li><a href="#hero">Home</a></li>
                         <li><a href="#books">All Books</a></li>
                         <li><a href="#about">About Emma</a></li>
-                        <li><a href="#newsletter">Reader Club</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
 

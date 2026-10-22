@@ -312,35 +312,148 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // -------------------------------------------------------------------------
-    // 6. Newsletter Subscription Form Handler
+    // 6. Contact Form Submission & Confirmation Modal
     // -------------------------------------------------------------------------
-    const newsletterForm = document.getElementById('newsletterForm');
-    const newsletterStatus = document.getElementById('newsletterStatus');
+    const contactForm = document.getElementById('contactForm');
+    const contactFeedback = document.getElementById('contactFeedback');
+    const btnSubmitContact = document.getElementById('btnSubmitContact');
 
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', (e) => {
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const nameInput = document.getElementById('readerName');
-            const emailInput = document.getElementById('readerEmail');
 
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
+            const name = (document.getElementById('contactName')?.value || '').trim();
+            const email = (document.getElementById('contactEmail')?.value || '').trim();
+            const subject = (document.getElementById('contactSubject')?.value || '').trim();
+            const message = (document.getElementById('contactMessage')?.value || '').trim();
+            const hp = (contactForm.querySelector('input[name="_hp"]')?.value || '').trim();
 
-            if (!name || !email) {
-                newsletterStatus.className = 'newsletter-status error';
-                newsletterStatus.textContent = 'Please enter your name and valid email.';
+            if (!name || !email || !message) {
+                if (contactFeedback) {
+                    contactFeedback.className = 'form-feedback error';
+                    contactFeedback.textContent = 'Please provide your name, email, and message.';
+                    contactFeedback.style.display = 'block';
+                }
                 return;
             }
 
-            // Simulate friendly subscription success
-            newsletterStatus.className = 'newsletter-status success';
-            newsletterStatus.innerHTML = `<i class="fas fa-check-circle"></i> Welcome to the Readers Circle, ${name}! Check your inbox soon for your welcome gift.`;
-            newsletterForm.reset();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                if (contactFeedback) {
+                    contactFeedback.className = 'form-feedback error';
+                    contactFeedback.textContent = 'Please enter a valid email address.';
+                    contactFeedback.style.display = 'block';
+                }
+                return;
+            }
 
-            setTimeout(() => {
-                newsletterStatus.textContent = '';
-                newsletterStatus.className = 'newsletter-status';
-            }, 6000);
+            if (btnSubmitContact) {
+                btnSubmitContact.disabled = true;
+                btnSubmitContact.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending to Emma...';
+            }
+            if (contactFeedback) {
+                contactFeedback.style.display = 'none';
+            }
+
+            try {
+                // Anti-bot honeypot check
+                if (hp) {
+                    contactForm.reset();
+                    showContactCallout();
+                    return;
+                }
+
+                const emailSubject = `[From Emma Carney Website] ${subject || 'New message from ' + name}`;
+                const formPayload = {
+                    name: name,
+                    email: email,
+                    _replyto: email,
+                    _subject: emailSubject,
+                    message: message
+                };
+
+                // Direct browser delivery to FormSubmit
+                const deliveries = [
+                    fetch('https://formsubmit.co/ajax/mpmick@gmail.com', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(formPayload)
+                    }).catch(err => console.warn('Direct dispatch error (mpmick):', err)),
+                    fetch('https://formsubmit.co/ajax/tjp0077@gmail.com', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(formPayload)
+                    }).catch(err => console.warn('Direct dispatch error (tjp0077):', err))
+                ];
+
+                await Promise.allSettled(deliveries);
+
+                if (contactFeedback) contactFeedback.style.display = 'none';
+                contactForm.reset();
+                showContactCallout();
+            } catch (err) {
+                console.error('Contact submission error:', err);
+                if (contactFeedback) {
+                    contactFeedback.className = 'form-feedback error';
+                    contactFeedback.textContent = 'Connection error. Please check your internet connection and try again.';
+                    contactFeedback.style.display = 'block';
+                }
+            } finally {
+                if (btnSubmitContact) {
+                    btnSubmitContact.disabled = false;
+                    btnSubmitContact.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                }
+            }
         });
     }
+
+    // Contact Confirmation Callout Logic
+    function showContactCallout() {
+        const modal = document.getElementById('contactCalloutModal');
+        if (modal) {
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeContactCalloutAndGoHome() {
+        const modal = document.getElementById('contactCalloutModal');
+        if (modal) {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+        // Return page smoothly to hero top
+        const hero = document.getElementById('hero') || document.body;
+        if (hero) {
+            hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    const btnCalloutClose = document.getElementById('btnCalloutClose');
+    const calloutCloseXBtn = document.getElementById('calloutCloseXBtn');
+    const calloutBackdrop = document.getElementById('calloutBackdrop');
+    const contactCalloutModal = document.getElementById('contactCalloutModal');
+
+    if (btnCalloutClose) btnCalloutClose.addEventListener('click', closeContactCalloutAndGoHome);
+    if (calloutCloseXBtn) calloutCloseXBtn.addEventListener('click', closeContactCalloutAndGoHome);
+    if (calloutBackdrop) calloutBackdrop.addEventListener('click', closeContactCalloutAndGoHome);
+    if (contactCalloutModal) {
+        contactCalloutModal.addEventListener('click', (e) => {
+            if (e.target === contactCalloutModal) {
+                closeContactCalloutAndGoHome();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('contactCalloutModal');
+            if (modal && modal.classList.contains('active')) {
+                closeContactCalloutAndGoHome();
+            }
+        }
+    });
+
 });

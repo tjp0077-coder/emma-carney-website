@@ -28,7 +28,7 @@ Official hero landing page and romance catalog for author **Emma Carney** (conte
   - Interactive **Quick Synopsis Modal** for instant reader previews without leaving the page.
   - Behind the Pen / About Emma section highlighting her connection to Michael Parker.
   - Cross-navigation banner to Michael Parker's historical thriller catalog ([michaelparkerbooks.com](https://www.michaelparkerbooks.com/)).
-  - Reader Club newsletter signup form with instant validation feedback.
+  - Direct reader contact form with instant validation feedback and confirmation modal.
 
 ---
 
@@ -38,7 +38,7 @@ Official hero landing page and romance catalog for author **Emma Carney** (conte
 Emma Carney/
 ├── index.html               # Semantic, accessible, SEO-optimized landing page
 ├── styles.css               # Dreamy romance design system & responsive layout
-├── script.js                # Interactive UI, 3D tilt, modal preview, newsletter
+├── script.js                # Interactive UI, 3D tilt, modal preview, contact form
 ├── README.md                # Documentation & feature overview
 ├── DEPLOYMENT.md            # Subfolder & standalone hosting instructions
 └── images/
