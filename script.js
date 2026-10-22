@@ -363,27 +363,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                const emailSubject = `[From Emma Carney Website] ${subject || 'New message from ' + name}`;
+                // Defensive CRLF sanitization to mitigate header injection
+                const cleanSubject = subject.replace(/[\r\n]/g, ' ').trim();
+                const cleanName = name.replace(/[\r\n]/g, ' ').trim();
+                const emailSubject = `[From Emma Carney Website] ${cleanSubject || 'New message from ' + cleanName}`;
+
                 const formPayload = {
-                    name: name,
+                    name: cleanName,
                     email: email,
                     _replyto: email,
                     _subject: emailSubject,
                     message: message
                 };
 
-                // Direct browser delivery to FormSubmit
+                // Dispatch using FormSubmit anonymized token to prevent email scraping
                 const deliveries = [
-                    fetch('https://formsubmit.co/ajax/mpmick@gmail.com', {
+                    fetch('https://formsubmit.co/ajax/a56559da3500dd457906bfc04ba0eefc', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify(formPayload)
-                    }).catch(err => console.warn('Direct dispatch error (mpmick):', err)),
-                    fetch('https://formsubmit.co/ajax/tjp0077@gmail.com', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify(formPayload)
-                    }).catch(err => console.warn('Direct dispatch error (tjp0077):', err))
+                    }).catch(err => console.warn('Direct dispatch error:', err))
                 ];
 
                 await Promise.allSettled(deliveries);
